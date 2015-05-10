@@ -1,0 +1,22 @@
+{
+  "name": "cb-pub",
+  "version": "1.0.0",
+  "description": "Crossbow.io publisher",
+  "main": "index.js",
+  "bin": "cli.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "formidable": "^1.0.17",
+    "fstream": "^1.0.6",
+    "meow": "^3.1.0",
+    "mkdirp": "^0.5.0",
+    "q": "^1.4.0",
+    "rimraf": "^2.3.3",
+    "tar": "^2.1.1",
+    "through2": "^0.6.5"
+  }
+}

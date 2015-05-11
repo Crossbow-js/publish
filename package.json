@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "eazy-logger": "^2.1.2",
+    "form-data": "^0.2.0",
     "formidable": "^1.0.17",
     "fstream": "^1.0.6",
     "meow": "^3.1.0",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "chai": "^2.3.0",
     "mocha": "^2.2.4",
-    "sinon": "^1.14.1"
+    "sinon": "^1.14.1",
+    "supertest": "^0.15.0"
   }
 }

@@ -40,7 +40,6 @@ function handleUpload (req, res) {
          * Ensure the request had a file upload called `release`
          */
         if (files.release) {
-
             /**
              * Process the incoming file upload
              */

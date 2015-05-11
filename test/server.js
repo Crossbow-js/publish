@@ -43,48 +43,4 @@ describe('Running the Server', function () {
             done();
         });
     });
-    it('can create correct symlinks for a release', function (done) {
-        var app = http.createServer(server).listen();
-        cmd({
-            cwd: fixtureDir,
-            dest: "http://localhost:" + app.address().port + '/upload',
-            logLevel: 'silent'
-        })
-        .then(function (output) {
-            assert.isTrue(fs.existsSync(output.symlinks.target));
-            assert.isTrue(fs.existsSync(output.symlinks.target));
-            app.close();
-            done();
-        });
-    });
-    it('can upack the folder correctly', function (done) {
-        var app = http.createServer(server).listen();
-        cmd({
-            cwd: fixtureDir,
-            dest: "http://localhost:" + app.address().port + '/upload',
-            logLevel: 'silent'
-        })
-        .then(function (output) {
-            var expected = fs.readFileSync('test/fixtures/public/index.html', 'utf-8');
-            var actual   = fs.readFileSync(output.symlinks.src + '/index.html', 'utf-8');
-            assert.deepEqual(expected, actual);
-            app.close();
-            done();
-        });
-    });
-    it('can create symlinks correctly', function (done) {
-        var app = http.createServer(server).listen();
-        cmd({
-            cwd: fixtureDir,
-            dest: "http://localhost:" + app.address().port + '/upload',
-            logLevel: 'silent'
-        })
-        .then(function (output) {
-            var symlink  = fs.readlinkSync(output.symlinks.target);
-            var expectdSymlink = output.symlinks.src.split('/').slice(-2).join('/'); // last 2 segs
-            assert.equal(expectdSymlink, symlink);
-            app.close();
-            done();
-        });
-    });
 });

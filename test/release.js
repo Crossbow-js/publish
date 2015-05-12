@@ -19,12 +19,12 @@ describe('Creating a release', function () {
             dest: "http://localhost:" + app.address().port + '/upload',
             logLevel: 'silent'
         })
-        .then(function (output) {
-            assert.isTrue(fs.existsSync(output.symlinks.target));
-            assert.isTrue(fs.existsSync(output.symlinks.target));
+        .then(function (resp) {
+            assert.isTrue(fs.existsSync(resp.output.symlinks.target));
+            assert.isTrue(fs.existsSync(resp.output.symlinks.target));
             app.close();
             done();
-        });
+        }).done();
     });
     it('can upack the folder correctly', function (done) {
         var app = http.createServer(server).listen();
@@ -33,9 +33,9 @@ describe('Creating a release', function () {
             dest: "http://localhost:" + app.address().port + '/upload',
             logLevel: 'silent'
         })
-        .then(function (output) {
+        .then(function (resp) {
             var expected = fs.readFileSync('test/fixtures/public/index.html', 'utf-8');
-            var actual   = fs.readFileSync(output.symlinks.src + '/index.html', 'utf-8');
+            var actual   = fs.readFileSync(resp.output.symlinks.src + '/index.html', 'utf-8');
             assert.deepEqual(expected, actual);
             app.close();
             done();
@@ -48,9 +48,9 @@ describe('Creating a release', function () {
             dest: "http://localhost:" + app.address().port + '/upload',
             logLevel: 'silent'
         })
-        .then(function (output) {
-            var symlink  = fs.readlinkSync(output.symlinks.target);
-            var expectdSymlink = output.symlinks.src.split('/').slice(-2).join('/'); // last 2 segs
+        .then(function (resp) {
+            var symlink  = fs.readlinkSync(resp.output.symlinks.target);
+            var expectdSymlink = resp.output.symlinks.src.split('/').slice(-2).join('/'); // last 2 segs
             assert.equal(expectdSymlink, symlink);
             app.close();
             done();
@@ -65,7 +65,7 @@ describe('Creating a release', function () {
         };
 
         cmd(config)
-        .then(function (output) {
+        .then(function (resp) {
 
             var filepath = 'test/fixtures/public/index.html';
             var defaultContent = fs.readFileSync(filepath, 'utf-8');
@@ -74,9 +74,9 @@ describe('Creating a release', function () {
             fs.writeFileSync(filepath, dummyContent);
 
             cmd(config)
-                .then(function (output) {
+                .then(function (resp) {
 
-                    var actual = fs.readFileSync(output.symlinks.src + '/index.html', 'utf-8');
+                    var actual = fs.readFileSync(resp.output.symlinks.src + '/index.html', 'utf-8');
 
                     assert.equal(dummyContent, actual);
 

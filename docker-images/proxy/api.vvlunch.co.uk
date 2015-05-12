@@ -1,0 +1,57 @@
+upstream project {
+   server 46.101.49.71:8080;
+ # server 22.22.22.3:3000;
+ # server 22.22.22.5:3000;
+}
+ 
+server {
+  server_name api.vvlunch.co.uk
+  listen 80;
+ 
+  location / {
+    proxy_pass http://project;
+  }
+
+  location ~* \.(css|js|gif|jpe?g|png)$ {
+    expires 168h;
+    
+  }
+  location /api {
+    expires 10m;
+  }
+}
+
+server {
+  server_name *.vvlunch.co.uk
+  listen 80;
+
+    set $basepath "/var/www/sites";
+    set $rootpath "crossbow/current";
+    set $domain $host;
+    set $subdomain "";
+
+    # check multi name domain to multi application
+    if ($domain ~ "^(.*)\.vvlunch\.co\.uk$") {
+        set $subdomain $1;
+        set $domain $2;
+        set $rootpath "${subdomain}/current/";
+        set $servername "${subdomain}.vvlunch.co.uk";
+    }
+
+  root $basepath/$rootpath;
+
+  charset utf-8; add_header "X-UA-Compatible" "IE=Edge,chrome=1";
+  index   index.html;
+
+  location / {
+      expires -1;
+      add_header Pragma "no-cache";
+      add_header crossbow-subdomain $subdomain;
+      add_header crossbow-domain $domain;
+      add_header crossbow-root $rootpath;
+      add_header crossbow-host $host;
+      add_header Cache-Control "no-store, no-cache, must-revalidate, post-check=0, pre-check=0";
+      try_files $uri $uri/index.html =404;
+  }
+}
+

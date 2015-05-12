@@ -1,3 +1,3 @@
 FROM    nginx
 COPY	nginx.default.conf /etc/nginx/nginx.conf
-COPY    proxy /etc/nginx/conf.d/default.conf
+COPY    api.vvlunch.co.uk /etc/nginx/conf.d/api.vvlunch.co.uk.conf

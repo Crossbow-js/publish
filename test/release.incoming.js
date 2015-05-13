@@ -12,7 +12,7 @@ var fixtureDir = resolve('test', 'fixtures');
 function getPaths (resp) {
     return {
         release: path.join(process.env.CBDEST, resp.result.subdomain, resp.result.basename),
-        target: path.join(process.env.CBDEST, resp.result.subdomain, resp.result.basename, 'public'),
+        target:  path.join(process.env.CBDEST, resp.result.subdomain, resp.result.basename, 'public'),
         symlink: path.join(process.env.CBDEST, resp.result.subdomain, 'current')
     }
 }

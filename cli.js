@@ -2,16 +2,28 @@
 
 var meow = require('meow');
 var cli  = meow({help: "yep"});
+var logger  = require('./lib/logger');
 
 if (!module.parent) {
     handleCli(cli);
 }
 
-function handleCli(cli) {
+function handleCli(cli, opts) {
+    opts = opts || {};
+    opts.cb = opts.cb || function () {};
+
     try {
-        require('./lib/command.' + cli.input[0])(cli.flags);
+        var out = require('./lib/command.' + cli.input[0])(cli.flags);
+        opts.cb(null, out);
     } catch (e) {
-        console.error(e);
-        console.log(e.stack);
+        if (e.code && e.code === 'MODULE_NOT_FOUND') {
+            logger.error('The command {cyan:`%s`} does not exist', cli.input[0]);
+        } else {
+            console.error(e);
+            console.log(e.stack);
+        }
+        opts.cb(e);
     }
 }
+
+module.exports = handleCli;

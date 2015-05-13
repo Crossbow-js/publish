@@ -57,7 +57,7 @@ function handleUpload (req, res) {
                  * Set the status to 'success' and also pass
                  * along any output (this is typically info about the upload)
                  */
-                res.end(JSON.stringify({status: 'success', fields: fields, output: output}));
+                res.end(JSON.stringify({status: 'success', result: output}));
             })
             /**
              * Catch any errors that occured in the file upload

@@ -26,7 +26,9 @@ describe('Running the Server', function () {
     it('can issue the publish command when server offline', function (done) {
         cmd({
             cwd: fixtureDir,
-            logLevel: 'silent'
+            logLevel: 'silent',
+            user: 'shakyshane@gmail.com',
+            subdomain: 'shane'
         }).catch(function (err) {
             done();
         });
@@ -36,11 +38,13 @@ describe('Running the Server', function () {
         cmd({
             cwd: fixtureDir,
             dest: "http://localhost:" + app.address().port,
-            logLevel: 'silent'
+            logLevel: 'silent',
+            user: 'shakyshane@gmail.com',
+            subdomain: 'shane'
         }).catch(function (out) {
             assert.equal(out.res.statusCode, 401);
             app.close();
             done();
-        });
+        }).done();
     });
 });

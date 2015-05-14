@@ -15,6 +15,9 @@ function handleCli(cli, opts) {
     try {
         var out = require('./lib/command.' + cli.input[0]);
         out(cli.flags)
+            .then(function (out) {
+                console.log(out);
+            })
             .progress(function (log) {
                 var fn = logger[log.level];
                 if (typeof fn === 'function') {
@@ -42,7 +45,7 @@ function handleCli(cli, opts) {
                         //console.log(err.stack);
                     }
                 }
-            });
+            }).done();
         opts.cb(null, out);
     } catch (e) {
         if (e.code && e.code === 'MODULE_NOT_FOUND') {
@@ -51,6 +54,7 @@ function handleCli(cli, opts) {
             console.error(e);
             console.log(e.stack);
         }
+        console.log(e);
         opts.cb(e);
     }
 }

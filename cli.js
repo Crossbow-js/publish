@@ -13,7 +13,36 @@ function handleCli(cli, opts) {
     opts.cb = opts.cb || function () {};
 
     try {
-        var out = require('./lib/command.' + cli.input[0])(cli.flags);
+        var out = require('./lib/command.' + cli.input[0]);
+        out(cli.flags)
+            .progress(function (log) {
+                var fn = logger[log.level];
+                if (typeof fn === 'function') {
+                    if (Array.isArray(log.msg)) {
+                        fn.apply(null, log.msg);
+                    } else {
+                        fn(log.msg);
+                    }
+                } else {
+                    console.log(log.msg);
+                }
+            })
+            .catch(function (err) {
+                console.log(err);
+                console.log(err.stack);
+                //deferred.reject(err);
+                if (err.code && err.code === 'ECONNREFUSED') {
+                    logger.error('Could not contact the release server. It may be offline.');
+                } else {
+                    if (typeof err.msg === 'string') {
+                        logger.error(err.msg);
+                    } else {
+                        //unknown error, log
+                        console.log(err);
+                        //console.log(err.stack);
+                    }
+                }
+            });
         opts.cb(null, out);
     } catch (e) {
         if (e.code && e.code === 'MODULE_NOT_FOUND') {

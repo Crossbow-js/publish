@@ -31,7 +31,7 @@ describe('Running the Server', function () {
             subdomain: 'shane'
         }).catch(function (err) {
             done();
-        });
+        }).done();
     });
     it('can return 401 when incorrect endpoint hit', function (done) {
         var app = http.createServer(server).listen();

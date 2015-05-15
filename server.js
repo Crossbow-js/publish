@@ -1,6 +1,5 @@
 var formidable = require('formidable');
 var http       = require('http');
-var util       = require('util');
 var incoming   = require('./lib/incoming');
 
 module.exports = server;

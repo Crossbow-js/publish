@@ -21,7 +21,7 @@ describe('Creating a release', function () {
     beforeEach(function () {
         rimraf.sync('releases');
     });
-    it.only('can create correct symlinks for a release', function (done) {
+    it('can create correct symlinks for a release', function (done) {
         var app = http.createServer(server).listen();
         cmd({
             cwd: fixtureDir,
@@ -32,7 +32,6 @@ describe('Creating a release', function () {
         })
         .then(function (resp) {
             var paths = getPaths(resp);
-                console.log(paths);
             assert.isTrue(fs.existsSync(paths.symlink));
             assert.isTrue(fs.existsSync(paths.release));
             assert.isTrue(fs.existsSync(paths.target));

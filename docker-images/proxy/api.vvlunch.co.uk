@@ -22,6 +22,7 @@ server {
 
 server {
   server_name *.vvlunch.co.uk
+  client_max_body_size 100M;
   listen 80;
 
     set $basepath "/var/www/sites";

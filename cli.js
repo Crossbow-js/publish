@@ -27,21 +27,23 @@ function handleCli(cli, opts) {
                         fn(log.msg);
                     }
                 } else {
-                    console.log(log.msg);
+                    //console.log(log.msg);
                 }
             })
             .catch(function (err) {
-                console.log(err);
-                console.log(err.stack);
-                //deferred.reject(err);
                 if (err.code && err.code === 'ECONNREFUSED') {
                     logger.error('Could not contact the release server. It may be offline.');
                 } else {
                     if (typeof err.msg === 'string') {
                         logger.error(err.msg);
                     } else {
+                        if (err.level && err.msg) {
+                            console.log(err.msg);
+                        } else {
+                            throw err;
+                        }
                         //unknown error, log
-                        console.log(err);
+                        //console.log(err);
                         //console.log(err.stack);
                     }
                 }

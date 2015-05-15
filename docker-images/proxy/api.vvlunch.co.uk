@@ -4,7 +4,7 @@ upstream project {
  
 server {
   server_name api.vvlunch.co.uk
-  client_max_body_size 20m;
+  client_max_body_size 100m;
   listen 80;
  
   location / {

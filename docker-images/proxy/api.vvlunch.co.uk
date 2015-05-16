@@ -1,19 +1,18 @@
 upstream project {
    server 46.101.49.71:8080;
 }
- 
+
 server {
   server_name api.vvlunch.co.uk
-  client_max_body_size 100m;
   listen 80;
- 
+
   location / {
     proxy_pass http://project;
   }
 
   location ~* \.(css|js|gif|jpe?g|png)$ {
     expires 168h;
-    
+
   }
   location /api {
     expires 10m;
@@ -22,8 +21,8 @@ server {
 
 server {
   server_name *.vvlunch.co.uk
-  client_max_body_size 100m;
   listen 80;
+  gzip  on;
 
     set $basepath "/var/www/sites";
     set $rootpath "crossbow/current";

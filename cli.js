@@ -16,7 +16,8 @@ function handleCli(cli, opts) {
         var out = require('./lib/command.' + cli.input[0]);
         out(cli.flags)
             .then(function (out) {
-                console.log(out);
+                logger.info('{green:✔} URL: http://%s.vvlunch.co.uk', out.result.subdomain);
+                logger.info('{green:✔} ID:  %s', out.result.basename);
             })
             .progress(function (log) {
                 var fn = logger[log.level];

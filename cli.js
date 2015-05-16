@@ -3,6 +3,7 @@
 var meow = require('meow');
 var cli  = meow({help: "yep"});
 var logger  = require('./lib/logger');
+var conf  = require('./lib/config');
 
 if (!module.parent) {
     handleCli(cli);
@@ -16,7 +17,8 @@ function handleCli(cli, opts) {
         var out = require('./lib/command.' + cli.input[0]);
         out(cli.flags)
             .then(function (out) {
-                logger.info('{green:✔} URL: http://%s.vvlunch.co.uk', out.result.subdomain);
+                var url = "http://%s.vvlunch.co.uk".replace('%s', out.result.subdomain);
+                logger.info('{green:✔} URL: %s', url);
                 logger.info('{green:✔} ID:  %s', out.result.basename);
             })
             .progress(function (log) {

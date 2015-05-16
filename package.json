@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "archiver": "^0.14.3",
+    "cli-spinner": "^0.2.1",
     "eazy-logger": "^2.1.2",
     "form-data": "^0.2.0",
     "formidable": "^1.0.17",
@@ -19,6 +20,7 @@
     "meow": "^3.1.0",
     "mkdirp": "^0.5.0",
     "object-assign": "^2.0.0",
+    "pretty-bytes": "^1.0.4",
     "prom-seq": "^1.2.0",
     "q": "^1.4.0",
     "rimraf": "^2.3.3",

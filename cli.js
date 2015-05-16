@@ -38,7 +38,7 @@ function handleCli(cli, opts) {
                         logger.error(err.msg);
                     } else {
                         if (err.level && err.msg) {
-                            console.log(err.msg);
+                            logger.error(err.msg);
                         } else {
                             throw err;
                         }

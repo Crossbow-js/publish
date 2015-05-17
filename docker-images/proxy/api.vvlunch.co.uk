@@ -1,5 +1,5 @@
 upstream project {
-   server 46.101.49.71:8080;
+   server {{pass}};
 }
 
 server {

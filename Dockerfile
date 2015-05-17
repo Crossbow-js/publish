@@ -9,7 +9,7 @@ RUN     yum install -y npm
 COPY . /src
 
 # Install app dependencies
-RUN cd /src; npm install
+RUN cd /src; npm install --production
 
 EXPOSE  8080
 CMD ["node", "src/index.js"]

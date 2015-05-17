@@ -1,0 +1,49 @@
+var fs = require('fs');
+var logger = require('./logger');
+var createSpinner = require('./spinner');
+
+module.exports = function (deferred, item) {
+
+    var FormData = require('form-data');
+    var form = new FormData();
+    var spinner = createSpinner('Uploading...');
+    spinner.start();
+
+    logger.debug('sending user {cyan:%s', item.config.get('user'));
+    logger.debug('sending subdomain {cyan:%s', item.config.get('subdomain'));
+    logger.debug('sending release {cyan:%s', item.config.get('filepath'));
+
+    form.append('user', item.config.get('user'));
+    form.append('flags', JSON.stringify(item.config.toJS()));
+    form.append('hash', item.config.get('hash'));
+    form.append('subdomain', item.config.get('subdomain'));
+    form.append('release', fs.createReadStream(item.config.get('filepath')));
+
+    form.submit(item.config.get('dest'), function(err, res) {
+        spinner.stop(true);
+
+        if (err) {
+            return deferred.reject(err);
+        }
+        var chunks = [];
+        res.on('data', function (data) {
+            chunks.push(data);
+        });
+        res.on('end', function () {
+            if (res.statusCode === 200) {
+                if (chunks.length) {
+                    var result = JSON.parse(chunks.join(''));
+                    if (result.status === 'error') {
+                        deferred.reject(result);
+                    } else {
+                        deferred.resolve(result);
+                    }
+                }
+            } else {
+                console.log(res.statusCode);
+                deferred.reject({level: 'error', msg: ['None 200 response'], res: res, statusCode: res.statusCode});
+            }
+        });
+        res.resume(); // for node-0.10.x
+    });
+};

@@ -42,6 +42,7 @@ module.exports.createUserSession = function(req, res, user) {
 module.exports.createApp = function() {
   var host = process.env.MONGO_PORT_27017_TCP_ADDR || 'localhost';
   var port = process.env.MONGO_PORT_27017_TCP_PORT || '27017';
+  console.log('mongodb://'+host+':' +port);
   mongoose.connect('mongodb://'+host+':' +port);
 
   var app = express();

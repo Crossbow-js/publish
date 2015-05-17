@@ -1,5 +1,5 @@
 upstream project {
-   server {{pass}};
+   server node-release:8080;
 }
 
 server {

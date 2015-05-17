@@ -1,5 +1,26 @@
-upstream project {
+upstream node-app {
+   server node-app:8080;
+}
+
+upstream node-release {
    server node-release:8080;
+}
+
+server {
+  server_name vvlunch.co.uk www.vvlunch.co.uk
+  listen 80;
+
+  location / {
+    proxy_pass http://node-app;
+  }
+
+  location ~* \.(css|js|gif|jpe?g|png)$ {
+    expires 168h;
+
+  }
+  location /api {
+    expires 10m;
+  }
 }
 
 server {
@@ -7,7 +28,7 @@ server {
   listen 80;
 
   location / {
-    proxy_pass http://project;
+    proxy_pass http://node-release;
   }
 
   location ~* \.(css|js|gif|jpe?g|png)$ {

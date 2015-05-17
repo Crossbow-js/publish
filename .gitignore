@@ -1,5 +1,5 @@
 node_modules
 .idea
 sites
-test/fixtures/releases
-releases
+release/test/fixtures/releases
+release/releases

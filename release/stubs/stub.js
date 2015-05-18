@@ -7,21 +7,7 @@ var dockerUrl  = require('url').parse(process.env.DOCKER_HOST);
 mongoose.connect('mongodb://' + dockerUrl.hostname + ':4001');
 
 var bcrypt = require('bcryptjs');
-
-/**
- * Our User model.
- *
- * This is how we create, edit, delete, and retrieve user accounts via MongoDB.
- */
-var User = mongoose.model('User', new Schema({
-    id:           ObjectId,
-    firstName:    { type: String, required: '{PATH} is required.' },
-    lastName:     { type: String, required: '{PATH} is required.' },
-    email:        { type: String, required: '{PATH} is required.', unique: true },
-    password:     { type: String, required: '{PATH} is required.' },
-    data:         Object
-}));
-
+var User   = require('../lib/models').User;
 var salt = bcrypt.genSaltSync(10);
 var hash = bcrypt.hashSync('123456', salt);
 
@@ -29,7 +15,8 @@ var user = new User({
     firstName:  'shane',
     lastName:   'osbourne',
     email:      'shakyshane@gmail.com',
-    password:   hash
+    password:   hash,
+    subdomain:  'shane'
 });
 
 user.save(function(err) {
@@ -42,7 +29,7 @@ user.save(function(err) {
         console.log(error);
         process.exit(1);
     } else {
-        console.log("USER STUB CREATED");
+        console.log("User stub created with", user);
         process.exit(0);
     }
 });

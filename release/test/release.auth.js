@@ -7,8 +7,8 @@ var path    = require('path');
 var resolve = require('path').resolve;
 var cmd     = require('../lib/command.publish');
 var models  = require('../lib/models');
-var mongoose = require('mongoose');
 var exec    = require('child_process').exec;
+var db      = require('../lib/db');
 
 var fixtureDir = resolve('test', 'fixtures');
 
@@ -20,15 +20,36 @@ function getPaths (resp) {
     }
 }
 
-var dockerUrl  = require('url').parse(process.env.DOCKER_HOST);
-mongoose.connect('mongodb://' + dockerUrl.hostname + ':4001');
-
 describe('Creating a release with auth', function () {
-    it('can create correct symlinks for a release', function (done) {
-        models.User.findOne({ email: 'shakyshane@gmail.com' }, 'firstName lastName email data', function(err, user) {
-            console.log(err);
-            console.log(user);
+    it('can reject a non-user', function (done) {
+
+        var app = http.createServer(server).listen();
+        cmd({
+            cwd: fixtureDir,
+            dest: "http://localhost:" + app.address().port + '/upload',
+            logLevel: 'silent',
+            user: 'non-user@gmail.com',
+            subdomain: 'shane'
+        })
+        .catch(function (err) {
+            assert.equal(err.status, 'error');
+            assert.equal(err.msg,    'User not found');
             done();
-        });
+        }).done();
+    });
+    it('can reject a valid user, with invalid subdomain', function (done) {
+        var app = http.createServer(server).listen();
+        cmd({
+            cwd: fixtureDir,
+            dest: "http://localhost:" + app.address().port + '/upload',
+            logLevel: 'silent',
+            user: 'shakyshane@gmail.com',
+            subdomain: 'kittens'
+        })
+        .catch(function (err) {
+            assert.equal(err.status, 'error');
+            assert.equal(err.msg,    'Sorry, you have not registered that subdomain.');
+            done();
+        }).done();
     });
 });

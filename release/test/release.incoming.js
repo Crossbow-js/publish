@@ -1,11 +1,12 @@
-var assert  = require('chai').assert;
-var server  = require('../server');
-var http    = require('http');
-var rimraf  = require('rimraf');
-var fs      = require('fs');
-var path    = require('path');
-var resolve = require('path').resolve;
-var cmd     = require('../lib/command.publish');
+var assert   = require('chai').assert;
+var server   = require('../server');
+var http     = require('http');
+var rimraf   = require('rimraf');
+var fs       = require('fs');
+var path     = require('path');
+var resolve  = require('path').resolve;
+var cmd      = require('../lib/command.publish');
+var db       = require('../lib/db');
 
 var fixtureDir = resolve('test', 'fixtures');
 

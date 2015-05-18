@@ -23,6 +23,10 @@ module.exports = function (incoming) {
 
     var tasks = [
         /**
+         * Verify user
+         */
+        require('./verify.incoming.user'),
+        /**
          * Verify the incoming tar ball
          */
         require('./verify.incoming'),
@@ -53,7 +57,5 @@ module.exports = function (incoming) {
             basename: output.basename,
             subdomain: output.subdomain
         };
-    }).catch(function (err) {
-        console.log(err);
-    })
+    });
 };

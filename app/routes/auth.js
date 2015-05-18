@@ -26,7 +26,8 @@ router.post('/register', function(req, res) {
     firstName:  req.body.firstName,
     lastName:   req.body.lastName,
     email:      req.body.email,
-    password:   hash,
+    subdomain:  req.body.subdomain,
+    password:   hash
   });
   user.save(function(err) {
     if (err) {

@@ -16,7 +16,7 @@ module.exports = function (deferred, item) {
             }
             deferred.reject({level: 'error', msg: 'Sorry, you have not registered that subdomain.'});
         } else {
-            deferred.reject({level: 'error', msg: 'User not found'});
+            deferred.reject({level: 'error', msg: 'User not found - please visit {cyan:http://crossbowsites.com/register} to create an account'});
         }
     });
 };

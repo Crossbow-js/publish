@@ -17,7 +17,10 @@ function handleCli(cli, opts) {
         var out = require('./lib/command.' + cli.input[0]);
         out(cli.flags)
             .then(function (out) {
-                var url = "http://%s.vvlunch.co.uk".replace('%s', out.result.subdomain);
+                var url = "http://%s.%s"
+                    .replace('%s', out.result.subdomain)
+                    .replace('%s', conf.get('domain'));
+
                 logger.info('{green:✔} URL: %s', url);
                 logger.info('{green:✔} ID:  %s', out.result.basename);
             })

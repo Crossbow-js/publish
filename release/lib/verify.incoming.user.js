@@ -1,5 +1,6 @@
 var fs     = require("fs");
 var models = require("./models");
+var db     = require("./db");
 
 /**
  * Before unpacking, ensure the hash matches
@@ -18,5 +19,4 @@ module.exports = function (deferred, item) {
             deferred.reject({level: 'error', msg: 'User not found'});
         }
     });
-    return deferred.promise;
 };

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var host = process.env.MONGO_PORT_27017_TCP_ADDR || 'localhost';
+var port = process.env.MONGO_PORT_27017_TCP_PORT || '27017';
 
-var dockerUrl  = require('url').parse(process.env.DOCKER_HOST);
-mongoose.connect('mongodb://' + dockerUrl.hostname + ':4001');
+mongoose.connect('mongodb://' + host + ':' + port);

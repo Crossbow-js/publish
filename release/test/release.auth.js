@@ -33,7 +33,7 @@ describe('Creating a release with auth', function () {
         })
         .catch(function (err) {
             assert.equal(err.status, 'error');
-            assert.equal(err.msg,    'User not found');
+            assert.include(err.msg,    'User not found');
             done();
         }).done();
     });

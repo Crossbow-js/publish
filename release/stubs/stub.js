@@ -1,13 +1,12 @@
 var mongoose = require('mongoose');
+var db = require('../lib/db');
 
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-var dockerUrl  = require('url').parse(process.env.DOCKER_HOST);
-mongoose.connect('mongodb://' + dockerUrl.hostname + ':4001');
-
 var bcrypt = require('bcryptjs');
 var User   = require('../lib/models').User;
+
 var salt = bcrypt.genSaltSync(10);
 var hash = bcrypt.hashSync('123456', salt);
 

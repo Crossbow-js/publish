@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-docker stop $(docker ps -aq)
-docker rm $(docker ps -aq)
+eval "$(boot2docker shellinit)" && export DKIP="$(boot2docker ip)"
+./test-clean.sh
+export CBDEST=$(pwd)/releases
 docker run --name mongotest -p 4001:27017 -d mongo
-node   stub.js
+node   stubs/stub.js
 node   node_modules/mocha/bin/mocha test --recursive
+./test-clean.sh

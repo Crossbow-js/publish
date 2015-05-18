@@ -40,8 +40,9 @@ user.save(function(err) {
             error = 'That email is already taken, please try another.';
         }
         console.log(error);
+        process.exit(1);
     } else {
         console.log("USER STUB CREATED");
-        process.exit()
+        process.exit(0);
     }
 });

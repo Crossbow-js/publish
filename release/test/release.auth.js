@@ -24,7 +24,7 @@ var dockerUrl  = require('url').parse(process.env.DOCKER_HOST);
 mongoose.connect('mongodb://' + dockerUrl.hostname + ':4001');
 
 describe('Creating a release with auth', function () {
-    it.only('can create correct symlinks for a release', function (done) {
+    it('can create correct symlinks for a release', function (done) {
         models.User.findOne({ email: 'shakyshane@gmail.com' }, 'firstName lastName email data', function(err, user) {
             console.log(err);
             console.log(user);

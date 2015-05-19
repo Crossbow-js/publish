@@ -24,6 +24,13 @@ block body
     input(type="password", name="password", required=true)
     br
 
+    span Account type:
+    select(name="account", required=true)
+      option(value="free") Free
+      option(value="pro")  Pro
+      option(value="unlimited") Unlimited
+    br
+
     span Subdomain: (eg, for john.crossbowsites.com, enter 'john')
     input(type="subdomain", name="subdomain", required=true)
     br

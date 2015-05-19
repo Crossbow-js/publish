@@ -22,7 +22,9 @@ module.exports.createUserSession = function(req, res, user) {
     firstName:  user.firstName,
     lastName:   user.lastName,
     email:      user.email,
-    data:       user.data || {},
+    account:    user.account,
+    subdomain:  user.subdomain,
+    data:       user.data || {}
   };
 
   req.session.user = cleanUser;
@@ -63,6 +65,7 @@ module.exports.createApp = function() {
 
   // routes
   app.use(require('./routes/auth'));
+  app.use(require('./routes/payment'));
   app.use(require('./routes/main'));
 
   return app;

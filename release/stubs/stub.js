@@ -15,7 +15,8 @@ var user = new User({
     lastName:   'osbourne',
     email:      'shakyshane@gmail.com',
     password:   hash,
-    subdomain:  'shane'
+    subdomain:  'shane',
+    account:    'free'
 });
 
 user.save(function(err) {

@@ -1,8 +1,9 @@
-var bcrypt = require('bcryptjs');
-var express = require('express');
+var bcrypt   = require('bcryptjs');
+var express  = require('express');
 
-var models = require('../models');
-var utils = require('../utils');
+var models   = require('../models');
+var utils    = require('../utils');
+var payments = require('../lib/payments');
 
 var router = express.Router();
 
@@ -21,14 +22,21 @@ router.get('/register', function(req, res) {
 router.post('/register', function(req, res) {
   var salt = bcrypt.genSaltSync(10);
   var hash = bcrypt.hashSync(req.body.password, salt);
+  var redirect = '/dashboard';
+
+  if (payments.isPaidAccount(req.body.account)) {
+    redirect = '/payment';
+  }
 
   var user = new models.User({
     firstName:  req.body.firstName,
     lastName:   req.body.lastName,
     email:      req.body.email,
     subdomain:  req.body.subdomain,
+    account:    req.body.account,
     password:   hash
   });
+
   user.save(function(err) {
     if (err) {
       var error = 'Something bad happened! Please try again.';
@@ -40,7 +48,7 @@ router.post('/register', function(req, res) {
       res.render('register.jade', { error: error });
     } else {
       utils.createUserSession(req, res, user);
-      res.redirect('/dashboard');
+      res.redirect(redirect);
     }
   });
 });

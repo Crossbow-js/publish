@@ -64,8 +64,8 @@ module.exports.createApp = function() {
   app.use(middleware.simpleAuth);
 
   // routes
-  app.use(require('./routes/auth'));
   app.use(require('./routes/payment'));
+  app.use(require('./routes/auth'));
   app.use(require('./routes/main'));
 
   return app;

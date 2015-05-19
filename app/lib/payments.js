@@ -3,4 +3,4 @@ function isPaidAccount (type) {
 }
 
 module.exports.isPaidAccount = isPaidAccount;
-module.exports.route = '/payments';
+module.exports.route = '/payment';

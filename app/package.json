@@ -17,5 +17,10 @@
     "jade": "^1.7.0",
     "bcryptjs": "^2.1.0",
     "mongoose": "^4.0.3"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "sinon": "^1.14.1",
+    "supertest": "^1.0.1"
   }
 }

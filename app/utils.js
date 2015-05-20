@@ -3,7 +3,6 @@ var csrf = require('csurf');
 var express = require('express');
 var mongoose = require('mongoose');
 var session = require('client-sessions');
-
 var middleware = require('./middleware');
 
 /**
@@ -17,19 +16,19 @@ var middleware = require('./middleware');
  *  @param {Object} res - The http response object.
  *  @param {Object} user - A user object.
  */
-module.exports.createUserSession = function(req, res, user) {
-  var cleanUser = {
-    firstName:  user.firstName,
-    lastName:   user.lastName,
-    email:      user.email,
-    account:    user.account,
-    subdomain:  user.subdomain,
-    data:       user.data || {}
-  };
+module.exports.createUserSession = function (req, res, user) {
+    var cleanUser = {
+        firstName: user.firstName,
+        lastName:  user.lastName,
+        email:     user.email,
+        account:   user.account,
+        subdomain: user.subdomain,
+        data:      user.data || {}
+    };
 
-  req.session.user = cleanUser;
-  req.user = cleanUser;
-  res.locals.user = cleanUser;
+    req.session.user = cleanUser;
+    req.user = cleanUser;
+    res.locals.user = cleanUser;
 };
 
 /**
@@ -41,34 +40,32 @@ module.exports.createUserSession = function(req, res, user) {
  *
  * @returns {Object} - An Express app object.
  */
-module.exports.createApp = function() {
-  var host = process.env.MONGO_PORT_27017_TCP_ADDR || 'localhost';
-  var port = process.env.MONGO_PORT_27017_TCP_PORT || '27017';
-  console.log('mongodb://'+host+':' +port);
-  mongoose.connect('mongodb://'+host+':' +port);
+module.exports.createApp = function () {
 
-  var app = express();
+    require('./lib/db');
 
-  // settings
-  app.set('view engine', 'jade');
+    var app = express();
 
-  // middleware
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(session({
-    cookieName: 'session',
-    secret: 'keyboard cat',
-    duration: 30 * 60 * 1000,
-    activeDuration: 5 * 60 * 1000
-  }));
-  app.use(csrf());
-  app.use(middleware.simpleAuth);
+    // settings
+    app.set('view engine', 'jade');
 
-  // routes
-  app.use(require('./routes/payment'));
-  app.use(require('./routes/auth'));
-  app.use(require('./routes/main'));
+    // middleware
+    app.use(bodyParser.urlencoded({extended: true}));
+    app.use(session({
+        cookieName:     'session',
+        secret:         'keyboard cat',
+        duration:       30 * 60 * 1000,
+        activeDuration: 5 * 60 * 1000
+    }));
+    app.use(csrf());
+    app.use(middleware.simpleAuth);
 
-  return app;
+    // routes
+    app.use(require('./routes/payment'));
+    app.use(require('./routes/auth'));
+    app.use(require('./routes/main'));
+
+    return app;
 };
 
 /**
@@ -76,10 +73,10 @@ module.exports.createApp = function() {
  *
  * If a user isn't logged in, they'll be redirected back to the login page.
  */
-module.exports.requireLogin = function(req, res, next) {
-  if (!req.user) {
-    res.redirect('/login');
-  } else {
-    next();
-  }
+module.exports.requireLogin = function (req, res, next) {
+    if (!req.user) {
+        res.redirect('/login');
+    } else {
+        next();
+    }
 };

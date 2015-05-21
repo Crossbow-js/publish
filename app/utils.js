@@ -46,6 +46,8 @@ module.exports.createApp = function () {
 
     var app = express();
 
+    app.locals.pretty = true;
+
     // settings
     app.set('view engine', 'jade');
 

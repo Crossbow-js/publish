@@ -1,5 +1,6 @@
 function isPaidAccount (type) {
-    return type === 'pro' || type === 'premium';
+    console.log(type);
+    return type === 'pro' || type === 'unlimited';
 }
 
 module.exports.isPaidAccount = isPaidAccount;

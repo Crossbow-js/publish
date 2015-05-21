@@ -1,3 +1,5 @@
+var Faker = require('faker');
+
 describe('Register specs', function () {
     beforeEach(function () {
         browser.ignoreSynchronization = true;
@@ -17,14 +19,33 @@ describe('Register specs', function () {
             expect(element.all(by.id('register')).count()).toBe(1);
             expect(form.all(by.css('input')).count()).toBe(7);
         });
+        it("should accept registration for a free account", function () {
+            element(by.css('input[name="firstName"]')).sendKeys('shane');
+            element(by.css('input[name="lastName"]')).sendKeys(Faker.name.lastName());
+            element(by.css('input[name="email"]')).sendKeys(Faker.internet.email());
+            element(by.css('input[name="password"]')).sendKeys('123456');
+            element(by.cssContainingText('option', 'Free')).click();
+            element(by.css('input[name="subdomain"]')).sendKeys('shane');
+            element(by.css('input[type="submit"]')).click();
+            expect(browser.getCurrentUrl()).toContain('/dashboard');
+        });
         it("should accept registration for a pro account", function () {
             element(by.css('input[name="firstName"]')).sendKeys('shane');
-            element(by.css('input[name="lastName"]')).sendKeys('osbourne');
-            element(by.css('input[name="email"]')).sendKeys('shakyshane@gmail.com');
+            element(by.css('input[name="lastName"]')).sendKeys(Faker.name.lastName());
+            element(by.css('input[name="email"]')).sendKeys(Faker.internet.email());
             element(by.css('input[name="password"]')).sendKeys('123456');
             element(by.cssContainingText('option', 'Pro')).click();
             element(by.css('input[name="subdomain"]')).sendKeys('shane');
-
+            element(by.css('input[type="submit"]')).click();
+            expect(browser.getCurrentUrl()).toContain('/payment');
+        });
+        it("should accept registration for an unlimited account", function () {
+            element(by.css('input[name="firstName"]')).sendKeys('shane');
+            element(by.css('input[name="lastName"]')).sendKeys(Faker.name.lastName());
+            element(by.css('input[name="email"]')).sendKeys(Faker.internet.email());
+            element(by.css('input[name="password"]')).sendKeys('123456');
+            element(by.cssContainingText('option', 'Unlimited')).click();
+            element(by.css('input[name="subdomain"]')).sendKeys('shane');
             element(by.css('input[type="submit"]')).click();
             expect(browser.getCurrentUrl()).toContain('/payment');
         });

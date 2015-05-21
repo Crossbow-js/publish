@@ -5,7 +5,7 @@ block vars
 
 block body
   h1 Create an Account
-  form(method="post")
+  form(method="post" id="register")
     input(type="hidden", name="_csrf", value=csrfToken)
 
     span First Name:
@@ -27,7 +27,7 @@ block body
     span Account type:
     select(name="account", required=true)
       option(value="free") Free
-      option(value="pro")  Pro
+      option(value="pro") Pro
       option(value="unlimited") Unlimited
     br
 

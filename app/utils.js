@@ -1,7 +1,6 @@
 var bodyParser = require('body-parser');
 var csrf = require('csurf');
 var express = require('express');
-var mongoose = require('mongoose');
 var session = require('client-sessions');
 var middleware = require('./middleware');
 

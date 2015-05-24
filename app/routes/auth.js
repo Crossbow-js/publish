@@ -7,6 +7,21 @@ var payments = require('../lib/payments');
 
 var router = express.Router();
 
+var accounts = {
+  'free': {
+    name: 'Free',
+    price: 0
+  },
+  'pro': {
+    name: 'Pro',
+    price: 9
+  },
+  'unlimited': {
+    name: 'Unlimited',
+    price: 49
+  }
+};
+
 /**
  * Render the registration page.
  */
@@ -33,12 +48,13 @@ router.post('/register', function(req, res) {
     lastName:   req.body.lastName,
     email:      req.body.email,
     subdomain:  req.body.subdomain,
-    account:    req.body.account,
+    account:    accounts[req.body.account],
     password:   hash
   });
 
   user.save(function(err) {
     if (err) {
+      console.log(err);
       var error = 'Something bad happened! Please try again.';
 
       if (err.code === 11000) {

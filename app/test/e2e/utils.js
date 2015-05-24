@@ -10,7 +10,8 @@ module.exports = {
         element(by.css('input[name="subdomain"]')).sendKeys(input.subdomain);
         element(by.css('input[type="submit"]')).click();
     },
-    getUser: function () {
+    getRandomUser: function () {
+
         var input = {
             firstName:  Faker.name.firstName(),
             lastName:   Faker.name.lastName(),

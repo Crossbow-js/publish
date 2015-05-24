@@ -16,7 +16,7 @@ describe('Register specs', function () {
     describe('Submitting the form', function () {
         var user;
         beforeEach(function () {
-            user = utils.getUser();
+            user = utils.getRandomUser();
         });
         it("should have correct form elements", function () {
             var form = element.all(by.id('register'));

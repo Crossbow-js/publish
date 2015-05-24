@@ -7,7 +7,7 @@ block body
   h1 Create an Account
 
   if error
-      p #{error}
+      p.error #{error}
 
   form(method="post" id="register")
     input(type="hidden", name="_csrf", value=csrfToken)

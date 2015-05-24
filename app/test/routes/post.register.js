@@ -2,7 +2,6 @@ var request = require('supertest');
 var assert  = require('chai').assert;
 var utils = require('../../utils');
 var cheerio = require('cheerio');
-var cookie = require('cookie');
 
 describe('Posting to the register route', function () {
     it('shows the form for registration with _csrf', function (done) {

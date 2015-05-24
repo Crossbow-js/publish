@@ -2,7 +2,9 @@ var bcrypt = require('bcryptjs');
 var express = require('express');
 
 var models = require('../models');
-var accounts = require('../accounts');
+var Account = require('../models').Account;
+var User = require('../models').User;
+var accounts = require('../accounts').accounts;
 var utils = require('../utils');
 var payments = require('../lib/payments');
 
@@ -21,6 +23,7 @@ router.get('/register', function (req, res) {
  * Once a user is logged in, they will be sent to the dashboard page.
  */
 router.post('/register', function (req, res) {
+
     var salt = bcrypt.genSaltSync(10);
     var hash = bcrypt.hashSync(req.body.password, salt);
     var redirect = '/dashboard';
@@ -29,30 +32,36 @@ router.post('/register', function (req, res) {
         redirect = '/payment';
     }
 
-    var user = new models.User({
-        firstName: req.body.firstName,
-        lastName:  req.body.lastName,
-        email:     req.body.email,
-        subdomain: req.body.subdomain,
-        account:   accounts[req.body.account],
-        password:  hash
-    });
-
-    user.save(function (err) {
-        if (err) {
-            console.log(err);
-            var error = 'Something bad happened! Please try again.';
-
-            if (err.code === 11000) {
-                error = 'That email is already taken, please try another.';
+    Account
+        .findOne({name: new RegExp(req.body.account, 'i')})
+        .exec(function (err, account) {
+            if (err) {
+                throw err;
             }
+            saveUser(new models.User({
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                email: req.body.email,
+                subdomain: req.body.subdomain,
+                account: account._id,
+                password: hash
+            }));
+        });
 
-            res.render('register.jade', {error: error});
-        } else {
-            utils.createUserSession(req, res, user);
-            res.redirect(redirect);
-        }
-    });
+    function saveUser (user) {
+        user.save(function (err) {
+            if (err) {
+                var error = 'Something bad happened! Please try again.';
+                if (err.code === 11000) {
+                    error = 'someeere';
+                }
+                res.render('register.jade', {error: error});
+            } else {
+                utils.createUserSession(req, res, user);
+                res.redirect(redirect);
+            }
+        });
+    }
 });
 
 /**

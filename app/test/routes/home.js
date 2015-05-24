@@ -15,4 +15,19 @@ describe('Homepage route', function () {
                 done();
             });
     });
+    it.only('tries to work with mongo', function (done) {
+
+        var models = require('../../models');
+        var accounts = require('../../accounts').accounts;
+
+        //var items = Object.keys(accounts).map(function (key) {
+        //    return accounts[key];
+        //});
+
+        models.Account.create({name: 'shane', price: 1}, function (err, out) {
+            console.log(err);
+            console.log(out);
+            done();
+        });
+    });
 });

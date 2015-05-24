@@ -4,4 +4,5 @@ docker stop mongotest
 docker rm   mongotest
 docker run --name mongotest -p 4001:27017 -d mongo --smallfiles
 ./cleardb.sh
+node stubs/accounts.js
 node app.js

@@ -1,32 +1,18 @@
-var bcrypt   = require('bcryptjs');
-var express  = require('express');
+var bcrypt = require('bcryptjs');
+var express = require('express');
 
-var models   = require('../models');
-var utils    = require('../utils');
+var models = require('../models');
+var accounts = require('../accounts');
+var utils = require('../utils');
 var payments = require('../lib/payments');
 
 var router = express.Router();
 
-var accounts = {
-  'free': {
-    name: 'Free',
-    price: 0
-  },
-  'pro': {
-    name: 'Pro',
-    price: 9
-  },
-  'unlimited': {
-    name: 'Unlimited',
-    price: 49
-  }
-};
-
 /**
  * Render the registration page.
  */
-router.get('/register', function(req, res) {
-  res.render('register.jade', { csrfToken: req.csrfToken() });
+router.get('/register', function (req, res) {
+    res.render('register.jade', {csrfToken: req.csrfToken()});
 });
 
 /**
@@ -34,46 +20,46 @@ router.get('/register', function(req, res) {
  *
  * Once a user is logged in, they will be sent to the dashboard page.
  */
-router.post('/register', function(req, res) {
-  var salt = bcrypt.genSaltSync(10);
-  var hash = bcrypt.hashSync(req.body.password, salt);
-  var redirect = '/dashboard';
+router.post('/register', function (req, res) {
+    var salt = bcrypt.genSaltSync(10);
+    var hash = bcrypt.hashSync(req.body.password, salt);
+    var redirect = '/dashboard';
 
-  if (payments.isPaidAccount(req.body.account)) {
-    redirect = '/payment';
-  }
-
-  var user = new models.User({
-    firstName:  req.body.firstName,
-    lastName:   req.body.lastName,
-    email:      req.body.email,
-    subdomain:  req.body.subdomain,
-    account:    accounts[req.body.account],
-    password:   hash
-  });
-
-  user.save(function(err) {
-    if (err) {
-      console.log(err);
-      var error = 'Something bad happened! Please try again.';
-
-      if (err.code === 11000) {
-        error = 'That email is already taken, please try another.';
-      }
-
-      res.render('register.jade', { error: error });
-    } else {
-      utils.createUserSession(req, res, user);
-      res.redirect(redirect);
+    if (payments.isPaidAccount(req.body.account)) {
+        redirect = '/payment';
     }
-  });
+
+    var user = new models.User({
+        firstName: req.body.firstName,
+        lastName:  req.body.lastName,
+        email:     req.body.email,
+        subdomain: req.body.subdomain,
+        account:   accounts[req.body.account],
+        password:  hash
+    });
+
+    user.save(function (err) {
+        if (err) {
+            console.log(err);
+            var error = 'Something bad happened! Please try again.';
+
+            if (err.code === 11000) {
+                error = 'That email is already taken, please try another.';
+            }
+
+            res.render('register.jade', {error: error});
+        } else {
+            utils.createUserSession(req, res, user);
+            res.redirect(redirect);
+        }
+    });
 });
 
 /**
  * Render the login page.
  */
-router.get('/login', function(req, res) {
-  res.render('login.jade', { csrfToken: req.csrfToken() });
+router.get('/login', function (req, res) {
+    res.render('login.jade', {csrfToken: req.csrfToken()});
 });
 
 /**
@@ -81,29 +67,29 @@ router.get('/login', function(req, res) {
  *
  * Once a user is logged in, they will be sent to the dashboard page.
  */
-router.post('/login', function(req, res) {
-  models.User.findOne({ email: req.body.email }, 'firstName lastName email password data', function(err, user) {
-    if (!user) {
-      res.render('login.jade', { error: "Incorrect email / password." });
-    } else {
-      if (bcrypt.compareSync(req.body.password, user.password)) {
-        utils.createUserSession(req, res, user);
-        res.redirect('/dashboard');
-      } else {
-        res.render('login.jade', { error: "Incorrect email / password."  });
-      }
-    }
-  });
+router.post('/login', function (req, res) {
+    models.User.findOne({email: req.body.email}, 'firstName lastName email password data', function (err, user) {
+        if (!user) {
+            res.render('login.jade', {error: "Incorrect email / password."});
+        } else {
+            if (bcrypt.compareSync(req.body.password, user.password)) {
+                utils.createUserSession(req, res, user);
+                res.redirect('/dashboard');
+            } else {
+                res.render('login.jade', {error: "Incorrect email / password."});
+            }
+        }
+    });
 });
 
 /**
  * Log a user out of their account, then redirect them to the home page.
  */
-router.get('/logout', function(req, res) {
-  if (req.session) {
-    req.session.reset();
-  }
-  res.redirect('/');
+router.get('/logout', function (req, res) {
+    if (req.session) {
+        req.session.reset();
+    }
+    res.redirect('/');
 });
 
 module.exports = router;
